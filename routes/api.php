@@ -18,27 +18,39 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('/posts',function(){
-    $data =  [
-        [
-            "userId" => 1,
-            "id" => 101,
-            "title" => "First Post",
-            "body" => "This is the body of the first post."
-        ],
-        [
-            "userId" => 2,
-            "id" => 102,
-            "title" => "Second Post",
-            "body" => "This is the body of the second post."
-        ],
-        [
-            "userId" => 3,
-            "id" => 103,
-            "title" => "Third Post",
-            "body" => "This is the body of the third post."
-        ]
-    ];
+    $data = include(app_path('Data/data.php'));
 
     return json_encode($data);
 });
+
+Route::delete('/posts/{id}',function($id){
+    $posts = include(app_path('Data/data.php'));
+    $filteredPosts = array_values(array_filter($posts,function($post) use ($id){
+        return $post['id'] != $id;
+    }));
+    return json_encode([
+        'message'=> 'Post deleted successfully',
+        'posts' => $filteredPosts
+    ]);
+
+    
+});
+
+Route::put('/posts/{id}',function( Request $request,$id){
+    $posts = include(app_path('Data/data.php'));
+
+    foreach($posts as &$post){
+        if($post['id']==$id){
+            $post['title']=$request->input('title',$post['title']);
+            $post['body']=$request->input('body',$post['body']);
+        }
+    }
+    return json_encode([
+        'message'=> 'Post updated successfully',
+        'posts' => $posts
+    ]);
+
+    
+});
+
     
