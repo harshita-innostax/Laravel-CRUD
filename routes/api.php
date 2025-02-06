@@ -49,8 +49,6 @@ Route::put('/posts/{id}',function( Request $request,$id){
         'message'=> 'Post updated successfully',
         'posts' => $posts
     ]);
-
-    
 });
 
     
