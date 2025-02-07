@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get("user",[UserController::class, 'getUser']);
+Route::get('/home',[UserController::class,'userHome']);
+Route::get('/about/{name}',[UserController::class,'userAbout']);
+
+//Route::view('/home','welcome'); {another way to do routing to open view, pass the route path as first parameter and the view as second}
